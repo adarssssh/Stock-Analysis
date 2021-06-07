@@ -2,6 +2,7 @@ from django.shortcuts import render
 import datetime as dt
 
 from .dataset import DataSet
+from .model import prediction
 
 # Create your views here.
 def chartdata(request):
@@ -16,11 +17,14 @@ def stockdata(request):
     data = DataSet(token,start,end)
     # data = [current price, highest, lowest, plot]
 
+    pred = prediction(token,start,end)
+
     context = {
         'current': data[0],
         'highest': data[1],
         'lowest': data[2],
-        'plt': data[3]
+        'plt': data[3],
+        'pred': pred,
     }
 
     return render(request, 'chart.html', context)
