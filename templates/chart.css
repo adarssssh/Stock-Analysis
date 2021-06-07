@@ -1,0 +1,15 @@
+* {
+    background-color: aqua;
+}
+
+ul {
+	list-style-type: none;
+}
+
+ul li {
+	display: inline-block;
+}
+
+a {
+	text-decoration: none;
+}

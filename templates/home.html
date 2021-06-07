@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<form method='POST' action='stock/'>
+    {% csrf_token %}
+
+    <table border='2'>
+        <tr>
+            <td>Company token</td>
+            <td>Start date</td>
+            <td>End date</td>
+            <td rowspan='2'><button type='submit'>Show</button></td>
+        </tr>
+        <tr>
+            <td><input type='text' name='token'></td>
+            <td><input type='date' name='start'></td>
+            <td><input type='date' name='end'></td>
+        </tr>
+    </table>
+</form>
+<h1>Welcome to Stock Market Analysis</h1>
+
+{% endblock %}
