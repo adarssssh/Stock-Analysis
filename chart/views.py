@@ -2,22 +2,28 @@ from django.shortcuts import render
 import datetime as dt
 
 from .dataset import DataSet
+from .dataset import priceData
 from .model import prediction
 
 # Create your views here.
 def chartdata(request):
-    return render(request, 'home.html', {})
+    price = priceData()
+    context = {
+        'tsla': price[0],
+        'aapl': price[1],
+        'goog': price[2],
+        'fb': price[3]
+    }
+    return render(request, 'home.html', context)
 
 def stockdata(request):
     print(request.POST['token'])
     token = request.POST['token'].upper()
-    start = request.POST['start']
-    end = request.POST['end']
 
-    data = DataSet(token,start,end)
+    data = DataSet(token)
     # data = [current price, highest, lowest, plot]
 
-    pred = prediction(token,start,end)
+    pred = prediction(token)
 
     context = {
         'current': data[0],

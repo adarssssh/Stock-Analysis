@@ -4,6 +4,24 @@
     <title>Stock Market Analysis</title>
 </head>
 
+<script>
+    function validate() {
+        var token = document.search.token.value;
+
+        if (token==null || token==""){
+            alert("Please enter a valid company token\neg. TSLA, AAPL, GOOG");
+            return false;
+        }
+    }
+</script>
+
+<style>
+li {
+    display: inline-block;
+    padding: 0px 50px 0px 50px; 
+}
+</style>
+
 <body>
 
     {% block content %}
