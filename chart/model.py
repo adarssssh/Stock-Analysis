@@ -8,14 +8,18 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 
-def prediction(token='TSLA', start='01-01-2020', end='01-01-2021'):
+def prediction(token):
+    end = dt.datetime.now()
+    day = dt.timedelta(days=365)
+    start = end - day
+
     data = web.DataReader(token, 'yahoo', start, end)
 
     #prepare data
     scaler = MinMaxScaler(feature_range=(0,1))
     scaled_data = scaler.fit_transform(data['Close'].values.reshape(-1,1))
 
-    prediction_days = 7
+    prediction_days = 60
 
     x_train = []
     y_train = []
@@ -30,11 +34,11 @@ def prediction(token='TSLA', start='01-01-2020', end='01-01-2021'):
     #build model
     model = Sequential()
 
-    model.add(LSTM(units=10, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+    model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
     model.add(Dropout(0.2))
-    model.add(LSTM(units=10, return_sequences=True))
+    model.add(LSTM(units=50, return_sequences=True))
     model.add(Dropout(0.2))
-    model.add(LSTM(units=10))
+    model.add(LSTM(units=50))
     model.add(Dropout(0.2))
     model.add(Dense(units=1))
 
@@ -58,16 +62,16 @@ def prediction(token='TSLA', start='01-01-2020', end='01-01-2021'):
 
     #make prediction on test data
 
-    x_test = []
+    # x_test = []
 
-    for x in range(prediction_days, len(model_inputs)):
-        x_test.append(model_inputs[x-prediction_days:x, 0])
+    # for x in range(prediction_days, len(model_inputs)):
+    #     x_test.append(model_inputs[x-prediction_days:x, 0])
 
-    x_test = np.array(x_test)
-    x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
+    # x_test = np.array(x_test)
+    # x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 
-    predicted_prices = model.predict(x_test)
-    predicted_prices = scaler.inverse_transform(predicted_prices)
+    # predicted_prices = model.predict(x_test)
+    # predicted_prices = scaler.inverse_transform(predicted_prices)
 
     #predicting future date
 
